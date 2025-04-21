@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "../node_modules/.prisma/client"  // This is the critical change
 }
 
 datasource db {
@@ -9,17 +9,14 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
-  updateAt DateTime @updatedAt @map("updated_at")
-
-  email String @unique
-  password String
-
-  name String  @unique
+  updatedAt DateTime @updatedAt @map("updated_at")
+  email     String   @unique
+  password  String
+  name      String   @unique
   avatarPath String @default("/uploads/default-avatar.png") @map("avatar_path")
-
-  phone String @default("")
-
+  phone     String   @default("")
+  
   @@map("user")
 }

@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "moduleResolution": "node",
+    "paths": {
+      "@prisma/client": ["node_modules/@prisma/client"]
+    },
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -16,6 +20,8 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "noUnusedLocals": false
   }
 }
+
