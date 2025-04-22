@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"  // This is the critical change
+  output   = "../node_modules/.prisma/client" 
 }
 
 datasource db {
@@ -9,14 +9,69 @@ datasource db {
 }
 
 model User {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  email      String   @unique
+  password   String
+
+  name       String   @unique
+  avatarPath String   @default("/uploads/default-avatar.png") @map("avatar_path")
+
+  phone      String   @default("")
+
+  favorites Product[]
+
+  orders Order[]
+  
+  @@map("user")
+}
+
+model Product {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  email     String   @unique
-  password  String
+
+  name        String @unique
+  slug        String @unique
+
+  description String
+  price       Int
+  image       String
+
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
+
+  user       User?     @relation(fields: [userId], references: [id])
+  userId     String
+
+  @@map("product")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   name      String   @unique
-  avatarPath String @default("/uploads/default-avatar.png") @map("avatar_path")
-  phone     String   @default("")
-  
-  @@map("user")
+  slug      String   @unique
+  image     String
+
+  products Product[]
+
+  @@map("category")
+}
+
+model Order {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  reference String   @unique 
+
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@map("order")
 }
